@@ -1,61 +1,49 @@
 <template>
-    <q-layout view="hHh lpr lFr">
-  
-      <q-header reveal elevated class="bg-primary text-white" height-hint="98">
-        <q-toolbar>
-          <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-  
-          <q-toolbar-title>
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-            </q-avatar>
-            Title
-          </q-toolbar-title>
-  
-          <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
-        </q-toolbar>
-  
-        <q-tabs align="left">
-          <q-route-tab to="/page1" label="Page One" />
-          <q-route-tab to="/page2" label="Page Two" />
-          <q-route-tab to="/page3" label="Page Three" />
-        </q-tabs>
-      </q-header>
-  
-      <q-drawer v-model="leftDrawerOpen" side="left" overlay elevated>
-        <!-- drawer content -->
-      </q-drawer>
-  
-      <q-drawer v-model="rightDrawerOpen" side="right" overlay behavior="mobile" elevated>
-        <!-- drawer content -->
-      </q-drawer>
-  
-      <q-page-container>
-        <router-view />
-      </q-page-container>
-  
-    </q-layout>
-  </template>
-  
-  <script>
-  import { ref } from 'vue'
-  
-  export default {
-    setup () {
-      const leftDrawerOpen = ref(false)
-      const rightDrawerOpen = ref(false)
-  
-      return {
-        leftDrawerOpen,
-        toggleLeftDrawer () {
-          leftDrawerOpen.value = !leftDrawerOpen.value
-        },
-  
-        rightDrawerOpen,
-        toggleRightDrawer () {
-          rightDrawerOpen.value = !rightDrawerOpen.value
-        }
+  <q-page class="row items-center justify-evenly">
+    <example-component
+      title="Example component"
+      active
+      :todos="todos"
+      :meta="meta"
+    ></example-component>
+  </q-page>
+</template>
+
+<script lang="ts">
+import { Todo, Meta } from 'components/models';
+import ExampleComponent from 'components/ExampleComponent.vue';
+import { defineComponent, ref } from 'vue';
+
+export default defineComponent({
+  name: 'IndexPage',
+  components: { ExampleComponent },
+  setup () {
+    const todos = ref<Todo[]>([
+      {
+        id: 1,
+        content: 'ct1'
+      },
+      {
+        id: 2,
+        content: 'ct2'
+      },
+      {
+        id: 3,
+        content: 'ct3'
+      },
+      {
+        id: 4,
+        content: 'ct4'
+      },
+      {
+        id: 5,
+        content: 'ct5'
       }
-    }
+    ]);
+    const meta = ref<Meta>({
+      totalCount: 1200
+    });
+    return { todos, meta };
   }
-  </script>
+});
+</script>
