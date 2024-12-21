@@ -1,9 +1,19 @@
 import { route } from 'quasar/wrappers';
 import { RouteCallback } from '@quasar/app-vite';
 import { RouteRecordRaw, RouteRecordRedirectOption } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth-store';
 
 const routes: RouteRecordRaw[] = [
   {
+    beforeEnter(to, from, next) {
+      const auth = useAuthStore();
+      auth.import();
+      if (!auth.isAuthorized) {
+        next();
+      } else {
+        next({ name: 'index' });
+      }
+    },
     path: '/',
     component: () => import('layouts/auth/AuthLayout.vue'),
     redirect: <RouteRecordRedirectOption> route( <RouteCallback> {name: 'login'} ),
@@ -21,8 +31,18 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    beforeEnter(to, from, next) {
+      const auth = useAuthStore();
+      auth.import();
+      if (auth.isAuthorized) {
+        next();
+      } else {
+        next({ name: 'login' });
+      }
+    },
     path: '/dashboard',
     component: () => import('layouts/dashboard/DashboardLayout.vue'),
+    redirect: <RouteRecordRedirectOption> route( <RouteCallback> {name: 'index'} ),
     children: [
       {
         path: 'index',
@@ -51,9 +71,6 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),

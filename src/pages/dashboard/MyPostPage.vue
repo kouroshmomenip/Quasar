@@ -120,7 +120,7 @@ const deletePost = (row: any) => {
   deletePostParameter.value.id = row.id;
   deletePostParameter.value.image = row.image;
   deletePostParameter.value.title = row.title;
-  deletePostParameter.value.username = 'kourosh';
+  deletePostParameter.value.username = 'hossein';
   deletePostParameter.value.description = row.description;
   deletePostParameter.value.modal = !deletePostParameter.value.modal
 };
